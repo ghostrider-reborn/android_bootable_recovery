@@ -279,6 +279,14 @@ if (!TWFunc::Path_Exists("/ramdisk-files.txt")) {
 		Repack_Options.Type = REPLACE_RAMDISK_UNPACKED;
 		Repack_Options.Backup_First = DataManager::GetIntValue("tw_repack_backup_first") != 0;
 		std::string verifyfiles = "cd / && sha256sum --status -c ramdisk-files.sha256sum";
+		if (PartitionManager.Find_Partition_By_Path("/vendor")) {
+			if (!PartitionManager.UnMount_By_Path("/vendor", false)) {
+				// PartitionManager failed to unmount /vendor, this should not happen,
+				// but in case it does, do a lazy unmount
+				LOGINFO("WARNING: vendor partition could not be unmounted normally!\n");
+				umount2("/vendor", MNT_DETACH);
+			}
+		}
 		if (TWFunc::Exec_Cmd(verifyfiles) != 0) {
 		gui_msg(Msg(msg::kError, "modified_ramdisk_error=ramdisk files have been modified, unable to create ramdisk to flash, fastboot boot twrp and try this option again or use the Install Recovery Ramdisk option."));
 			return false;
