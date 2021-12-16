@@ -475,6 +475,13 @@ bool TWPartition::Process_Fstab_Line(const char *fstab_line, bool Display_Error,
 			Storage_Name = Display_Name;
 			Can_Be_Backed_Up = Wipe_Available_in_GUI = Is_Super ? false : true;
 			Mount_Read_Only = true;
+		} else if (Mount_Point == "/system_ext") {
+			Display_Name = "System Ext";
+			Backup_Name = "System Ext";
+			Backup_Display_Name = Display_Name;
+			Storage_Name = Display_Name;
+			Can_Be_Backed_Up = Wipe_Available_in_GUI = Is_Super ? false : true;
+			Mount_Read_Only = true;
 		} else if (Mount_Point == "/odm") {
 			Display_Name = "ODM";
 			Backup_Name = "ODM";
